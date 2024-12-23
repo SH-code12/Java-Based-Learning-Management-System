@@ -208,8 +208,8 @@ public class InstructorController
     // Endpoint for fetching assignment grades and feedback
     @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
     @GetMapping(value = "/getAssignmentGrades/{assignmentId}")
-    public ResponseEntity<Map<String, Object>> getAssignmentGrades(@PathVariable Integer assignmentId) {
-        Map<String, Object> assignmentGrades = trackPerformanceService.getAssignmentGrades(assignmentId);
+    public ResponseEntity<Map<String, Object>> getAssignment_Submitions(@PathVariable Integer assignmentId) {
+        Map<String, Object> assignmentGrades = trackPerformanceService.getAssignment_Submitions(assignmentId);
         return ResponseEntity.ok(assignmentGrades);
     }
     @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
