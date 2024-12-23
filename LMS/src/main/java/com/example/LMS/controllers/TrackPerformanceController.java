@@ -26,8 +26,8 @@ public class TrackPerformanceController {
 
     // Endpoint for fetching assignment grades and feedback
     @GetMapping(value = "/assignments/{assignmentId}")
-    public ResponseEntity<Map<String, Object>> getAssignmentGrades(@PathVariable Integer assignmentId) {
-        Map<String, Object> assignmentGrades = trackPerformanceService.getAssignmentGrades(assignmentId);
+    public ResponseEntity<Map<String, Object>> getAssignment_Submitions(@PathVariable Integer assignmentId) {
+        Map<String, Object> assignmentGrades = trackPerformanceService.getAssignment_Submitions(assignmentId);
         return ResponseEntity.ok(assignmentGrades);
     }
 
