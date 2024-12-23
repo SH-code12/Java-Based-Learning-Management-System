@@ -59,7 +59,7 @@ public class StudentController
     // Endpoint for fetching assignment grades and feedback
     @GetMapping(value = "/assignments/{assignmentId}")
     public ResponseEntity<Map<String, Object>> getAssignmentGrades(@PathVariable Integer assignmentId) {
-        Map<String, Object> assignmentGrades = trackPerformanceService.getAssignmentGrades(assignmentId);
+        Map<String, Object> assignmentGrades = trackPerformanceService.getAssignment_Submitions(assignmentId);
         return ResponseEntity.ok(assignmentGrades);
     }
     @PreAuthorize("hasRole('STUDENT')")
