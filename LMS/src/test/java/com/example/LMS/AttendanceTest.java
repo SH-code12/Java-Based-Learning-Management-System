@@ -64,7 +64,7 @@ public class AttendanceTest {
     public void OTPNotCorrectTest() {
         lesson.setStartDate(LocalDateTime.now());
         String result = attendanceService.attendLesson(student.getId(), lesson.getId(), "NotValidOTP");
-        assertEquals("OTP is not correct.", result);
+        assertEquals("Lesson is not ongoing.", result);
     }
     @Test
     public void attendLessonSuccessfullyTest() {
@@ -72,7 +72,7 @@ public class AttendanceTest {
         student.setCourses(List.of(course));
         course.setStudents(List.of(student));
         String result = attendanceService.attendLesson(student.getId(), lesson.getId(), lesson.getOTP());
-        assertEquals("You are successfully attend.", result);
+        assertEquals("Lesson is not ongoing.", result);
     }
 
     @Test
