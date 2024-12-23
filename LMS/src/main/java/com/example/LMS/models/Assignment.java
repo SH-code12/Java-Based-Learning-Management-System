@@ -1,11 +1,12 @@
 package com.example.LMS.models;
 
 import jakarta.persistence.*;
+import java.util.List;
+
 @Entity
 public class Assignment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //id,title , description , deadline , grades , feedback
     private Integer assignmentID;
     private String title;
     private String description;
@@ -14,22 +15,28 @@ public class Assignment {
     private String feedback;
 
     @ManyToOne
-    @JoinColumn(name = "course_id", nullable = true) // Foreign key in Quiz table
+    @JoinColumn(name = "course_id", nullable = true) // Foreign key to Course table
     private CourseModel course;
 
+    @ManyToMany
+    @JoinTable(
+            name = "assignment_submissions",  // The name of the join table
+            joinColumns = @JoinColumn(name = "assignment_id"),  // Foreign key for Assignment
+            inverseJoinColumns = @JoinColumn(name = "student_id")  // Foreign key for Student
+    )
+    private List<StudentModel> submittedStudents;
 
     // Getters and Setters
 
-    public Assignment() {
-    }
+    public Assignment() {}
 
     public Assignment(Integer assignmentID, String title, String description, String deadline, double grades, String feedback, CourseModel course) {
+        this.assignmentID = assignmentID;
         this.title = title;
         this.description = description;
         this.deadline = deadline;
         this.grades = grades;
         this.feedback = feedback;
-        this.assignmentID = assignmentID;
         this.course = course;
     }
 
@@ -56,7 +63,6 @@ public class Assignment {
     public void setDescription(String description) {
         this.description = description;
     }
-
 
     public double getGrades() {
         return grades;
@@ -88,5 +94,13 @@ public class Assignment {
 
     public void setCourse(CourseModel course) {
         this.course = course;
+    }
+
+    public List<StudentModel> getSubmittedStudents() {
+        return submittedStudents;
+    }
+
+    public void setSubmittedStudents(List<StudentModel> submittedStudents) {
+        this.submittedStudents = submittedStudents;
     }
 }
