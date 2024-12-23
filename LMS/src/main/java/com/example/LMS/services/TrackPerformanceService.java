@@ -63,8 +63,7 @@ public class TrackPerformanceService {
         return result;
     }
 
-    // Fetch assignment grades and feedback
-    public Map<String, Object> getAssignmentGrades(Integer assignmentId) {
+    public Map<String, Object> getAssignment_Submitions(Integer assignmentId) {
         Optional<Assignment> assignmentOpt = assignmentRepository.findById(assignmentId);
 
         if (assignmentOpt.isPresent()) {
@@ -83,15 +82,27 @@ public class TrackPerformanceService {
                 Map<String, Object> studentDetails = new HashMap<>();
                 studentDetails.put("studentId", student.getId());
                 studentDetails.put("studentName", student.getName());
-                studentDetails.put("grade", assignment.getGrades());
-                studentDetails.put("feedback", assignment.getFeedback());
+
+                // Check if the student has submitted the assignment
+                boolean hasSubmitted = assignment.getSubmittedStudents() != null &&
+                        assignment.getSubmittedStudents().stream()
+                                .anyMatch(submittedStudent -> submittedStudent.getId().equals(student.getId()));
+
+                studentDetails.put("hasSubmitted", hasSubmitted ? "Submitted" : "Not Submitted");
+
+                // If submitted, add grade and feedback
+                if (hasSubmitted) {
+                    studentDetails.put("grade", assignment.getGrades());
+                    studentDetails.put("feedback", assignment.getFeedback());
+                }
+
                 studentDetails.put("date", new Date().toString()); // Replace with actual submission date if available
+
+                // Fetch the course for the student
                 List<CourseModel> courses = courseRepository.findByStudentId(Long.valueOf(student.getId())); // Ensure Long type
                 if (!courses.isEmpty()) {
-                    // Assuming the first course is the one to include; modify as necessary for your use case
                     studentDetails.put("courseId", courses.get(0).getId());  // Add the course ID to the student details
                 } else {
-                    // Handle case when no courses are found for the student
                     studentDetails.put("courseId", "No course found");
                 }
                 studentsGrades.add(studentDetails);
