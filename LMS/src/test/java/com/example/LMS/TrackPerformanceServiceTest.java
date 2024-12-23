@@ -79,7 +79,7 @@ class TrackPerformanceServiceTest {
     }
 
     @Test
-    void testGetAssignmentGrades() {
+    void getAssignment_Submitions() {
         int assignmentId = 1;
 
         Assignment mockAssignment = new Assignment();
@@ -95,7 +95,7 @@ class TrackPerformanceServiceTest {
         when(assignmentRepository.findById(assignmentId)).thenReturn(Optional.of(mockAssignment));
         when(studentRepository.findAll()).thenReturn(Collections.singletonList(mockStudent));
 
-        Map<String, Object> result = trackPerformanceService.getAssignmentGrades(assignmentId);
+        Map<String, Object> result = trackPerformanceService.getAssignment_Submitions(assignmentId);
 
         assertNotNull(result);
         assertEquals(assignmentId, result.get("assignmentId"));
@@ -111,7 +111,7 @@ class TrackPerformanceServiceTest {
         when(assignmentRepository.findById(assignmentId)).thenReturn(Optional.empty());
 
         NoSuchElementException exception = assertThrows(NoSuchElementException.class, () ->
-                trackPerformanceService.getAssignmentGrades(assignmentId)
+                trackPerformanceService.getAssignment_Submitions(assignmentId)
         );
 
         assertEquals("Assignment not found with ID: 1", exception.getMessage());
