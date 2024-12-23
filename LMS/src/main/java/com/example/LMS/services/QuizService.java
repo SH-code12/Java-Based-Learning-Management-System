@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -71,5 +72,34 @@ public class QuizService {
     // Fetch quiz by ID, returning Optional to handle quiz not found case
     public Optional<QuizModel> getQuizById(Long quizId) {
         return quizRepository.findById(quizId);
+    }
+    public QuizResultModel takeQuiz(Long quizId, Map<Long, String> userAnswers) {
+        Optional<QuizModel> optionalQuiz = quizRepository.findById(quizId);
+        if (optionalQuiz.isPresent()) {
+            QuizModel quiz = optionalQuiz.get();
+            List<QuestionModel> questions = quiz.getQuestions();
+            int totalQuestions = questions.size();
+            int correctAnswers = 0;
+
+            for (QuestionModel question : questions) {
+                String correctAnswer = question.getCorrectAnswer();
+                String userAnswer = userAnswers.get(question.getId());
+                if (correctAnswer != null && correctAnswer.equalsIgnoreCase(userAnswer)) {
+                    correctAnswers++;
+                }
+            }
+
+            double grade = (double) correctAnswers / totalQuestions * 100;
+
+            // Save the result (assuming a QuizResultModel exists for user attempts)
+            QuizResultModel result = new QuizResultModel();
+            result.setQuiz(quiz);
+            result.setUserAnswers(userAnswers);
+            result.setGrade(grade);
+            result.setTotalQuestions(totalQuestions);
+            result.setCorrectAnswers(correctAnswers);
+            return result; // You may want to save this result to a repository
+        }
+        return null; // Handle quiz not found
     }
 }

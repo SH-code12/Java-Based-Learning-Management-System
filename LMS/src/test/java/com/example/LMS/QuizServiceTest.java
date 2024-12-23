@@ -3,6 +3,7 @@ package com.example.LMS;
 import com.example.LMS.models.Assignment;
 import com.example.LMS.models.QuestionModel;
 import com.example.LMS.models.QuizModel;
+import com.example.LMS.models.QuizResultModel;
 import com.example.LMS.repositories.QuestionRepository;
 import com.example.LMS.repositories.QuizRepository;
 import com.example.LMS.services.QuizService;
@@ -12,10 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -136,6 +134,64 @@ class QuizServiceTest {
         // Then: Verify the grade is correctly set
         assertEquals(newGrade, quiz.getGrade(), "The grade should be updated correctly.");
         verify(quizRepository, times(1)).save(quiz);  // Ensure save was called once
+    }
+    @Test
+    void takeQuiz_ShouldReturnCorrectResult_WhenQuizExists() {
+        // Mock data
+        Long quizId = 1L;
+
+        QuestionModel question1 = new QuestionModel();
+        question1.setId(1L);
+        question1.setCorrectAnswer("A");
+
+        QuestionModel question2 = new QuestionModel();
+        question2.setId(2L);
+        question2.setCorrectAnswer("B");
+
+        QuizModel quiz = new QuizModel();
+        quiz.setId(quizId);
+        quiz.setQuestions(Arrays.asList(question1, question2));
+
+        Map<Long, String> userAnswers = new HashMap<>();
+        userAnswers.put(1L, "A");
+        userAnswers.put(2L, "C");
+
+        // Mocking repository
+        when(quizRepository.findById(quizId)).thenReturn(Optional.of(quiz));
+
+        // Call the method
+        QuizResultModel result = quizService.takeQuiz(quizId, userAnswers);
+
+        // Assertions
+        assertNotNull(result);
+        assertEquals(50.0, result.getGrade());
+        assertEquals(2, result.getTotalQuestions());
+        assertEquals(1, result.getCorrectAnswers());
+        assertEquals(quiz, result.getQuiz());
+        assertEquals(userAnswers, result.getUserAnswers());
+
+        // Verify repository interaction
+        verify(quizRepository, times(1)).findById(quizId);
+    }
+
+    @Test
+    void takeQuiz_ShouldReturnNull_WhenQuizDoesNotExist() {
+        // Mock data
+        Long quizId = 1L;
+        Map<Long, String> userAnswers = new HashMap<>();
+        userAnswers.put(1L, "A");
+
+        // Mocking repository
+        when(quizRepository.findById(quizId)).thenReturn(Optional.empty());
+
+        // Call the method
+        QuizResultModel result = quizService.takeQuiz(quizId, userAnswers);
+
+        // Assertions
+        assertNull(result);
+
+        // Verify repository interaction
+        verify(quizRepository, times(1)).findById(quizId);
     }
 
 }

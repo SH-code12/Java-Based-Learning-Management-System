@@ -131,5 +131,16 @@ public class StudentController
         }
         return ResponseEntity.ok(mediaFiles); // Return the list of media files for the course
     }
+    @PreAuthorize("hasRole('STUDENT')")
+    @PostMapping("/takeQuiz/{quizId}")
+    public ResponseEntity<QuizResultModel> takeQuiz(
+            @PathVariable Long quizId,
+            @RequestBody Map<Long, String> userAnswers) { // Question ID -> Answer
+        QuizResultModel result = quizService.takeQuiz(quizId, userAnswers);
+        if (result != null) {
+            return ResponseEntity.ok(result);
+        }
+        return ResponseEntity.notFound().build();
+    }
 
 }
