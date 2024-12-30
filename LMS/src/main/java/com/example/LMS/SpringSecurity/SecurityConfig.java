@@ -25,11 +25,10 @@ public class SecurityConfig {
                                 .requestMatchers("/user/login").permitAll()
                         .requestMatchers("/user/editprofile").authenticated()
                         .requestMatchers("/user/profiles/{userId}").authenticated()
-                        .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
 
-
-                        .requestMatchers("/instructor/**").hasAuthority("ROLE_INSTRUCTOR")
-                        .requestMatchers("/student/**").hasAuthority("ROLE_STUDENT")
+                        .requestMatchers("/ADMIN/**").hasAuthority("ADMIN")
+                        .requestMatchers("/INSTRUCTOR/**").hasAuthority("INSTRUCTOR")
+                        .requestMatchers("/STUDENT/**").hasAuthority("STUDENT")
                         .anyRequest().authenticated()  )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Stateless session, JWT-based authentication
