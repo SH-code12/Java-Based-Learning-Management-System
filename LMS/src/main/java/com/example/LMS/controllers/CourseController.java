@@ -100,6 +100,4 @@ public class CourseController {
         return ResponseEntity.ok(mediaFiles); // Return the list of media files for the course
     }
 
-
-
 }

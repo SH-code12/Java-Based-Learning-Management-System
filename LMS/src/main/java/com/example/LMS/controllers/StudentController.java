@@ -92,35 +92,6 @@ public class StudentController
     public ResponseEntity<String> attendLesson(@RequestParam int studentId, @RequestParam Long lessonId, @RequestParam String OTP) {
         return ResponseEntity.ok(attendanceService.attendLesson(studentId, lessonId, OTP));
     }
-    @PreAuthorize("hasRole('ROLE_STUDENT')")
-    @PostMapping("/sendByEmail")
-    public String sendNotificationByEmail(@RequestBody Map<String, Object> payload) {
-        // Extract values from payload
-        Integer userId = (Integer) payload.get("userId");
-        String type = (String) payload.get("type");
-        String message = (String) payload.get("message");
-        String timestampStr = (String) payload.get("timestamp");
-        LocalDateTime timestamp = timestampStr != null ? LocalDateTime.parse(timestampStr) : LocalDateTime.now();
-
-        // Find the user by ID
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-
-        // Create a new notification object
-        NotificationModel notification = new NotificationModel(user, type, message, timestamp);
-
-        // Save notification to the database
-        notificationService.sendNotification(notification);
-
-        // Send email notification
-        // Prepare the subject and message for the email
-        String subject = "Notification: " + type; // You can customize the subject as needed
-        String emailMessage = "You have a new notification:\n" + message; // Customize the email message
-
-        // Send email using the service
-        notificationService.sendEmailNotification(user.getEmail(), subject, emailMessage);
-
-        return "Notification sent successfully!";
-    }
 
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     @GetMapping("/{courseId}/materials")

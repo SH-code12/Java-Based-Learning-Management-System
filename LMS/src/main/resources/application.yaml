@@ -24,6 +24,6 @@ spring:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
     default-encoding: UTF-8
-server:
-  port: 9090
+#server:
+#  port: 9090
 
