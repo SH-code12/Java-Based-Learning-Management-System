@@ -26,18 +26,20 @@ public class AdminController {
 
     @Autowired
     private UserService userService;
+    @Autowired
     private NotificationService notificationService;
+    @Autowired
     private CourseService courseService;
-
+    @Autowired
     UserRepository userRepository;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/users")
     public ResponseEntity<Object> getAllUsers(Authentication authentication) {
 
         return userService.getAllUsers();
     }
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/sendByEmail")
     public String sendNotificationByEmail(@RequestBody Map<String, Object> payload) {
         // Extract values from payload
@@ -66,7 +68,7 @@ public class AdminController {
 
         return "Notification sent successfully!";
     }
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/{courseId}/students")
     public ResponseEntity<List<StudentModel>> getEnrolledStudents(@PathVariable Long courseId) {
         List<StudentModel> students = courseService.getStudentsByCourseId(courseId);

@@ -19,14 +19,16 @@ import java.util.Map;
 @RequestMapping("/student")
 public class StudentController
 {
+    @Autowired
     final StudentService studentService;
+    @Autowired
     private CourseService courseService;
+    @Autowired
     private AttendanceService attendanceService;
+    @Autowired
     private NotificationService notificationService;
+    @Autowired
     UserRepository userRepository;
-
-
-
 
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
@@ -37,17 +39,17 @@ public class StudentController
     private AssignmentService assignmentService;
     @Autowired
     private QuizService quizService;
-    @PreAuthorize("hasRole('STUDENT')")
+    @PreAuthorize("hasAuthority('STUDENT')")
     @GetMapping
     public ResponseEntity< List<StudentDTO> >retrieveAllStudents() {
         return ResponseEntity.ok(studentService.getAllStudents());
     }
-    @PreAuthorize("hasRole('STUDENT')")
+    @PreAuthorize("hasAuthority('STUDENT')")
     @GetMapping("/{id}")
     public ResponseEntity<StudentModel>  retrieveStudentById(@PathVariable int id) {
         return ResponseEntity.ok(studentService.getStudentById(id));
     }
-    @PreAuthorize("hasRole('STUDENT')")
+    @PreAuthorize("hasAuthority('STUDENT')")
     @PostMapping("/enrollCourse")
     public ResponseEntity<String> enrollCourse(@RequestParam("student_id") int studentId, @RequestParam("Course_id") long courseid) {
         System.out.println(studentId);
@@ -55,45 +57,45 @@ public class StudentController
         return  ResponseEntity.ok("Student Enroll successfully ");
 
     }
-    @PreAuthorize("hasRole('STUDENT')")
+    @PreAuthorize("hasAuthority('STUDENT')")
     // Endpoint for fetching assignment grades and feedback
     @GetMapping(value = "/assignments/{assignmentId}")
     public ResponseEntity<Map<String, Object>> getAssignmentGrades(@PathVariable Integer assignmentId) {
         Map<String, Object> assignmentGrades = trackPerformanceService.getAssignment_Submitions(assignmentId);
         return ResponseEntity.ok(assignmentGrades);
     }
-    @PreAuthorize("hasRole('STUDENT')")
+    @PreAuthorize("hasAuthority('STUDENT')")
     @GetMapping(value = "/quizes/{QuizId}")
     public ResponseEntity<Map<String, Object>> getQuizGrades(@PathVariable long QuizId) {
         Map<String, Object> quizGrades = trackPerformanceService.getQuizGrades(QuizId);
         return ResponseEntity.ok(quizGrades);
     }
     //submit quiz , assignment
-    @PreAuthorize("hasRole('STUDENT')")
+    @PreAuthorize("hasAuthority('STUDENT')")
     @PostMapping("/submitAssignment")
     public ResponseEntity<Assignment> submitAssignment(@RequestBody Assignment assignment) {
         Assignment submittedAssignment = assignmentService.submitAssignment(assignment);
         return ResponseEntity.ok(submittedAssignment);
     }
-    @PreAuthorize("hasRole('STUDENT')")
+    @PreAuthorize("hasAuthority('STUDENT')")
     @PostMapping("/submitQuiz")
     public ResponseEntity<QuizModel> submitQuiz(@RequestBody QuizModel quiz) {
         QuizModel submittedQuiz = quizService.submitQuiz(quiz);
         return ResponseEntity.ok(submittedQuiz);
     }
-    @PreAuthorize("hasRole('STUDENT')")
+    @PreAuthorize("hasAuthority('STUDENT')")
     @GetMapping("/displayCourses")
     public ResponseEntity<List<CourseDTO>> displayCourses() {
         List<CourseDTO> courses = courseService.displayCourses();
         return ResponseEntity.ok(courses);
     }
-    @PreAuthorize("hasRole('ROLE_STUDENT')")
+    @PreAuthorize("hasAuthority('STUDENT')")
     @PostMapping("/attend-lesson")
     public ResponseEntity<String> attendLesson(@RequestParam int studentId, @RequestParam Long lessonId, @RequestParam String OTP) {
         return ResponseEntity.ok(attendanceService.attendLesson(studentId, lessonId, OTP));
     }
 
-    @PreAuthorize("hasRole('ROLE_STUDENT')")
+    @PreAuthorize("hasAuthority('STUDENT')")
     @GetMapping("/{courseId}/materials")
     public ResponseEntity<List<String>> getCourseMaterials(@PathVariable Long courseId) {
         List<String> mediaFiles = courseService.getMediaFilesByCourseId(courseId);
@@ -102,7 +104,7 @@ public class StudentController
         }
         return ResponseEntity.ok(mediaFiles); // Return the list of media files for the course
     }
-    @PreAuthorize("hasRole('STUDENT')")
+    @PreAuthorize("hasAuthority('STUDENT')")
     @PostMapping("/takeQuiz/{quizId}")
     public ResponseEntity<QuizResultModel> takeQuiz(
             @PathVariable Long quizId,

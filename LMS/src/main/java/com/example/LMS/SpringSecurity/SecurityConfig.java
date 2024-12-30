@@ -22,14 +22,14 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/user/register").permitAll()
-                                .requestMatchers("/user/login").permitAll()
+                        .requestMatchers("/user/login").permitAll()
                         .requestMatchers("/user/editprofile").authenticated()
                         .requestMatchers("/user/profiles/{userId}").authenticated()
-
                         .requestMatchers("/ADMIN/**").hasAuthority("ADMIN")
-                        .requestMatchers("/INSTRUCTOR/**").hasAuthority("INSTRUCTOR")
+                        .requestMatchers("/INSTRUCTOR/**").hasAuthority("INSTRUCTOR")  // Uses hasAuthority for INSTRUCTOR
                         .requestMatchers("/STUDENT/**").hasAuthority("STUDENT")
-                        .anyRequest().authenticated()  )
+                        .anyRequest().authenticated()
+                )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Stateless session, JWT-based authentication
                 )
