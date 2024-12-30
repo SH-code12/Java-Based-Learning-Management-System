@@ -2,7 +2,10 @@
 
 ## Function Name: CreateCourse
 
-## Path: **`http://localhost:8080/instructor/createCourse`**
+## Path: 
+```
+http://localhost:8080/instructor/createCourse
+```
 
 ## Method: **`Post`**
 
@@ -22,7 +25,10 @@
 
 ## Function Name: updateCourse
 
-## Path: **`http://localhost:8080/instructor/{courseId}/update`**
+## Path: 
+```
+http://localhost:8080/instructor/{courseId}/update
+```
 ## Method: **`Put`**
 
 ## Body
@@ -41,7 +47,10 @@
 
 ## Function Name: uploadMedia
 
-## Path: **`http://localhost:8080/instructor/{courseId}/upload-media`**
+## Path: 
+```
+http://localhost:8080/instructor/{courseId}/upload-media
+```
 
 ## Method: **`Post`**
 
@@ -51,13 +60,19 @@
 
 ## Function Name: getEnrolledStudents
 
-## Path: **`http://localhost:8080/instructor/{courseId}/students`**
+## Path: 
+```
+http://localhost:8080/instructor/{courseId}/students
+```
 
 ## Method: **`Get`**
 
 ## Function Name: createQuiz
 
-## Path: **`http://localhost:8080/instructor/createQuiz`**
+## Path:
+```
+http://localhost:8080/instructor/createQuiz
+```
 
 ## Method: **`Post`**
 
@@ -77,13 +92,19 @@
 
 ## Function Name: getRandomQuestions
 
-## Path: **`http://localhost:8080/instructor/{quizId}/randomQuestions`**
+## Path: 
+```
+http://localhost:8080/instructor/{quizId}/randomQuestions
+```
 
 ## Method: **`Get`**
 
 ## Function Name: sendNotificationByEmail
 
-## Path: **`http://localhost:8080/instructor/sendByEmail`**
+## Path: 
+```
+http://localhost:8080/instructor/sendByEmail
+```
 
 ## Method: **`Post`**
 
@@ -102,7 +123,11 @@
 
 ## Function Name: addQuestion
 
-## Path: **`http://localhost:8080/instructor/{quizId}/addQuestion`**
+## Path: 
+```
+http://localhost:8080/instructor/{quizId}/addQuestion
+
+```
 
 ## Method: **`Post`**
 
@@ -123,12 +148,18 @@
 
 ## Function Name: displayCourses
 
-## Path: **`http://localhost:8080/student/displayCourses`**
+## Path: 
+```
+http://localhost:8080/student/displayCourses
+```
 
 ## Method: **`Get`**
 
 ## Function Name: getCourseMaterials
 
-## Path: **`http://localhost:8080/student/{courseId}/materials`**
+## Path: 
+```
+http://localhost:8080/student/{courseId}/materials
+```
 
 ## Method: **`Get`**
