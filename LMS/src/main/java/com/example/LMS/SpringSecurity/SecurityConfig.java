@@ -28,6 +28,7 @@ public class SecurityConfig {
                         .requestMatchers("/ADMIN/**").hasAuthority("ADMIN")
                         .requestMatchers("/INSTRUCTOR/**").hasAuthority("INSTRUCTOR")  // Uses hasAuthority for INSTRUCTOR
                         .requestMatchers("/STUDENT/**").hasAuthority("STUDENT")
+                        .requestMatchers("/api/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
