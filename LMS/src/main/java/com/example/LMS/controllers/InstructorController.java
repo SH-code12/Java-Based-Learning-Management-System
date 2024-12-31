@@ -3,6 +3,7 @@ package com.example.LMS.controllers;
 import com.example.LMS.DTOs.CourseDTO;
 import com.example.LMS.models.*;
 
+import com.example.LMS.repositories.AssignmentRepository;
 import com.example.LMS.repositories.UserRepository;
 import com.example.LMS.services.*;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
@@ -38,10 +39,9 @@ public class InstructorController {
     private TrackPerformanceService trackPerformanceService;
     @Autowired
     UserRepository userRepository;
-
+    @Autowired
+    private  AssignmentRepository assignmentRepository;
     private static final String UPLOAD_DIRECTORY = "C:/uploads/";
-
-
     @PreAuthorize("hasAuthority('INSTRUCTOR')")
     @PostMapping("/createCourse")
     public ResponseEntity<String> createCourse(@RequestBody CourseModel course) {
@@ -130,7 +130,7 @@ public class InstructorController {
 
 
     @PreAuthorize("hasAuthority('INSTRUCTOR')")
-    @PostMapping("/{quizId}/grade")
+    @PostMapping("/{quizId}/gradeQuiz")
     public ResponseEntity<QuizModel> gradeQuiz(
             @PathVariable long quizId,
             @RequestParam double grade,
@@ -146,7 +146,7 @@ public class InstructorController {
     }
 
     @PreAuthorize("hasAuthority('INSTRUCTOR')")
-    @PostMapping("/{assignmentId}/grade")
+    @PostMapping("/{assignmentId}/gradeAssign")
     public ResponseEntity<Assignment> gradeAssignment(
             @PathVariable Integer assignmentId,
             @RequestParam double grade,
@@ -170,7 +170,6 @@ public class InstructorController {
     @GetMapping("/{quizId}/randomQuestions")
     public ResponseEntity<List<QuestionModel>> getRandomQuestions(@PathVariable Long quizId, @RequestParam int numberOfQuestions) {
         Optional<QuizModel> quiz = quizService.getQuizById(quizId);
-
         if (quiz.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(Collections.emptyList());
@@ -256,5 +255,10 @@ public class InstructorController {
         List<CourseDTO> courses = courseService.displayCourses();
         return ResponseEntity.ok(courses);
 
+    }
+    @PreAuthorize("hasAuthority('INSTRUCTOR')")
+    @GetMapping("/{assignmentId}")
+    public ResponseEntity<Assignment> getAssignment(@PathVariable Integer assignmentId) {
+        return ResponseEntity.ok(assignmentRepository.findById(assignmentId).orElseThrow(() -> new RuntimeException("Assignment not found")));
     }
 }
