@@ -54,8 +54,11 @@ public class UserService {
             throw new IllegalArgumentException("Password is required");
         }
 
+
+        System.out.println("user role: "+user.getRole());
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        if(Objects.equals(user.getRole(), "STUDENT")){
+        if(Objects.equals(user.getRole(), "ROLE_STUDENT")){
             StudentModel student = new StudentModel(user.getName(),  user.getRole(), user.getPassword(),user.getEmail());
             Profile profile = new Profile(student);
             studentRepository.save(student);

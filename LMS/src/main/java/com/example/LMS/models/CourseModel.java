@@ -12,7 +12,6 @@ public class CourseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String courseId; // String as courseId
     private String title;
     private String description;
